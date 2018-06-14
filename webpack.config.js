@@ -1,10 +1,12 @@
-var path = require('path');
+const path = require('path');
+const webpack = require('webpack');
+
 
 module.exports = {
   entry: path.resolve(__dirname, 'src', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'dist'), 
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   watchOptions: {
     aggregateTimeout: 100,
@@ -32,5 +34,12 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify('development')
+        }
+    })
+]
 }

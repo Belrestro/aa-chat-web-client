@@ -5,15 +5,28 @@ const http = require('http')
 const io = require('socket.io')(http);
 const webpack = require('webpack');
 const config = require('./webpack.config');
+const opn = require('opn');
 
 const compiler = webpack(config);
+const serverConfig = {
+  port : 3000,
+  init : false
+};
+
+// Debug required
+process.env.NODE_ENV = 'development'
 
 compiler.watch({
   ignored: /node_modules/,
   aggregateTimeout: 1000
 }, (err, stats) => {
+  if (!serverConfig.init) {
+    opn(`http://localhost:${serverConfig.port}`);
+    serverConfig.init = true;
+    return;
+  }
   if (!err) return io.emit('rebuild');
-  console.error(err);
+  console.log(err);
 });
 
 const serve = serveStatic('./dist', {
@@ -30,4 +43,4 @@ io.attach(server, {
   cookie: false
 });
 
-server.listen(3000);
+server.listen(serverConfig.port);

@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {config} from './chat_config';
 
-import App from './App';
 import Chat from './Chat';
 
-
 ReactDOM.render(
-    <App/>, document.getElementById('root'));
+    <Chat/>, document.getElementById(config.ROOT_ELEMENT));
